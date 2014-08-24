@@ -1,7 +1,7 @@
 * Note
 * Clean data
 * Description
-* Example
+* Example  
 ##Note
 * make sure the library {reshape2} have been installed
 * the zip data files should be unzipped to your working directory, so there should be a "UCI HAR Dataset" right in the working directory
