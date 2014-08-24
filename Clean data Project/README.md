@@ -1,6 +1,17 @@
+* Note
+* Clean data
+* Description
+* Example
 ##Note
 * make sure the library {reshape2} have been installed
 * the zip data files should be unzipped to your working directory, so there should be a "UCI HAR Dataset" right in the working directory
+
+##Clean data
+1. cbind the subject data, labels data and the test/train data, and names the test/train data.
+2. rbind the test and train data and return the mergedata.
+3. Extract the mean and standard deviation feature columns,and save the new dataset ExtData.
+4. melt the ExtData
+5. dcast the molten data to count the mean of each variable for each activity for each subject.
 
 ##Description
 source the run_analysis.R file and it will return 4 functions:

@@ -50,16 +50,17 @@ mergeTT<-function(){
   subTrain<-readIn$getSubTrain
   trainData<-readIn$getTrainData
   yTrain<-readIn$getYTrain
-  
+  #lower the case and remove the dash
+  feature2<-gsub("-","",tolower(as.character(features$V2)))
   test<-cbind(subTest,yTest,testData)
-  names(test)<-c("sub","labels",as.character(features$V2))
+  names(test)<-c("sub","label",feature2)
   
   train<-cbind(subTrain,yTrain,trainData)
-  names(train)<-c("sub","labels",as.character(features$V2))
+  names(train)<-c("sub","label",feature2)
   
   mergeData<-rbind(test,train)
   ## name the table with descriptive names
-  mergeData$labels<-as.character(sapply(mergeData$labels,function(x) actLabels[actLabels$V1==x,2]))
+  mergeData$label<-as.character(sapply(mergeData$label,function(x) actLabels[actLabels$V1==x,2]))
   mergeData<-mergeData[order(mergeData$sub),]
   # assign the data as global for other functions to use
   assign("mergeData",mergeData,envir = .GlobalEnv)
@@ -70,14 +71,14 @@ getExtData<-function(){
   if (!exists("mergeData"))
     mergeData<-mergeTT()
   ExtFeatures<-names(mergeData)[c(grep("mean\\(\\)",names(mergeData)),grep("std\\(\\)",names(mergeData)))]
-  ExtData<-mergeData[,c("sub","labels",ExtFeatures)]
+  ExtData<-mergeData[,c("sub","label",ExtFeatures)]
 }
 ## create the new tidy data set
 getNewset<-function(ExtData){
   if(!exists("Extdata"))
     ExtData<-getExtData()
   mdata<-melt(ExtData,id=1:2)
-  tidyData<-dcast(mdata,sub+labels~variable,mean)
+  tidyData<-dcast(mdata,sub+label~variable,mean)
   if(!file.exists("tidyData.txt"))
     write.table(tidyData,"tidyData.txt",row.name=F)
   tidyData
